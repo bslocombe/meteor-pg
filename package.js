@@ -1,17 +1,18 @@
 Package.describe({
-  name: 'numtel:pg',
+  name: 'bslocombe:pg',
   summary: 'PostgreSQL support with Reactive Select Subscriptions',
-  version: '1.0.2',
-  git: 'https://github.com/numtel/meteor-pg.git'
+  version: '1.0.3',
+  git: 'https://github.com/bslocombe/meteor-pg.git'
 });
 
 Npm.depends({
-  'pg': '4.3.0',
-  'pg-live-select': '1.0.3'
+  'pg': '8.0.3',
+  'pg-live-select': 'git://github.com/bslocombe/pg-live-select.git#master',
+  'lodash': '4.17.15',
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom('1.0');
+  api.versionsFrom('1.3');
   api.use([
     'underscore',
     'ddp',
@@ -22,8 +23,6 @@ Package.onUse(function(api) {
   api.export('LivePg', 'server');
   api.export('pg', 'server');
 
-  api.addFiles('lib/PgSubscription.js');
-  api.export('PgSubscription');
 });
 
 Package.onTest(function(api) {
@@ -35,7 +34,7 @@ Package.onTest(function(api) {
     'insecure',
     'grigio:babel@0.1.1',
     'numtel:pg-server@0.0.1',
-    'numtel:pg'
+    'bslocombe:pg'
   ]);
   api.use('test-helpers'); // Did not work concatenated above
   api.addFiles([
