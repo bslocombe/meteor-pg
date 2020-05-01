@@ -113,6 +113,31 @@ $ meteor test-packages ./
 
 ```
 
+## Example Usage Publication
+```js
+var liveDb = new LivePg(Meteor.settings.private.postgres, 'test');
+
+Meteor.publish('test', function(){
+  let res = liveDb.select(
+    `SELECT * from entity`,
+    [],
+    LivePgKeySelector.Columns(['id']),
+    [{table:'entity'}]
+  );
+  return res;
+})
+
+var closeAndExit = function() {
+  // Call process.exit() as callback
+  liveDb.cleanup(process.exit);
+};
+
+// Close connections on hot code push
+process.on('SIGTERM', closeAndExit);
+// Close connections on exit (ctrl + c)
+process.on('SIGINT', closeAndExit);
+```
+
 ## License
 
 MIT
