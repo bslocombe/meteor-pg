@@ -1,6 +1,6 @@
 # numtel:pg [![Build Status](https://travis-ci.org/numtel/meteor-pg.svg?branch=master)](https://travis-ci.org/numtel/meteor-pg)
 
-Reactive PostgreSQL for Meteor
+Reactive PostgreSQL for Meteor, Credits to original package by numtel, updated to get newer PG libraries. 
 
 Provides Meteor integration of the [`pg-live-select` NPM module](https://github.com/numtel/pg-live-select), bringing reactive `SELECT` statement result sets from PostgreSQL >= 9.3.
 
