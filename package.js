@@ -1,13 +1,13 @@
 Package.describe({
-  name: 'bslocombe:pg',
+  name: 'benslocombe:pg',
   summary: 'PostgreSQL support with Reactive Select Subscriptions',
-  version: '1.0.3',
+  version: '1.0.4',
   git: 'https://github.com/bslocombe/meteor-pg.git'
 });
 
 Npm.depends({
   'pg': '8.0.3',
-  'pg-live-select': 'git://github.com/bslocombe/pg-live-select.git#master',
+  'pg-live-select': 'https://github.com/bslocombe/pg-live-select.git#master',
   'lodash': '4.17.15',
 });
 
