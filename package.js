@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'benslocombe:pg',
+  name: 'bslocombe:pg',
   summary: 'PostgreSQL support with Reactive Select Subscriptions',
   version: '1.0.4',
   git: 'https://github.com/bslocombe/meteor-pg.git'
@@ -33,7 +33,6 @@ Package.onTest(function(api) {
     'autopublish',
     'insecure',
     'grigio:babel@0.1.1',
-    'numtel:pg-server@0.0.1',
     'bslocombe:pg'
   ]);
   api.use('test-helpers'); // Did not work concatenated above
