@@ -117,6 +117,12 @@ $ meteor test-packages ./
 ```js
 var liveDb = new LivePg(Meteor.settings.private.postgres, 'test');
 
+// uses the name of the publication as the name of the collection by default.
+// option to override so you can have more than one publication for the same "collection" 
+// this is the publication context.. 
+
+// this._collection_name = "entities"
+
 Meteor.publish('test', function(){
   let res = liveDb.select(
     `SELECT * from entity`,

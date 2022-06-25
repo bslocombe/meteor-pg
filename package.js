@@ -47,7 +47,7 @@ Package.onTest(function(api) {
   ], 'client');
 
   api.addFiles([
-    'test/settings/test.pg.json', // Change Postgres port in this file
+    // 'test/settings/test.pg.json', // Change Postgres port in this file
     'test/helpers/querySequence.js',
     'test/index.es6'
   ], 'server');
