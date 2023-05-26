@@ -1,7 +1,7 @@
 Package.describe({
   name: 'bslocombe:pg',
   summary: 'PostgreSQL support with Reactive Select Subscriptions',
-  version: '1.0.5',
+  version: '1.0.6',
   git: 'https://github.com/bslocombe/meteor-pg.git'
 });
 
