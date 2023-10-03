@@ -24,6 +24,6 @@ Package.onUse(function(api) {
 Package.onTest(function(api) {
   api.use('ecmascript');
   api.use('tinytest');
-  api.use('bslocombe:pg2');
+  api.use('bslocombe:pg');
   api.mainModule('LivePg-tests.js');
 });
