@@ -1,13 +1,17 @@
-// numtel:pg
-// MIT License, ben@latenightsketches.com
-// lib/LivePg.js
+// Write your package code here!
+
+// Variables exported by this module can be imported by other packages and
+// applications. See pg2-tests.js for an example of importing.
 var Future = Npm.require('fibers/future');
 
-pg = Npm.require('pg');
-LivePg = Npm.require('pg-live-select');
-var _ = Npm.require('lodash');
+import _ from 'lodash'
+
+import LivePgLib from './lib/LivePgLib';
+import LivePgKeySelector from './lib/LivePgKeySelector';
 
 // Convert the LivePg.LivePg object into a cursor
+const LivePg = LivePgLib
+
 LivePg.LivePgSelect.prototype._publishCursor = function(sub) {
   var self = this;
   var fut = new Future;
@@ -94,3 +98,6 @@ LivePg.LivePgSelect.prototype.fetch = function() {
 
   return dataWithIds;
 }
+
+
+export {LivePg, LivePgKeySelector}

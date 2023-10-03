@@ -1,20 +1,17 @@
-# numtel:pg [![Build Status](https://travis-ci.org/numtel/meteor-pg.svg?branch=master)](https://travis-ci.org/numtel/meteor-pg)
+# benslocombe:pg
 
-Reactive PostgreSQL for Meteor, Credits to original package by numtel, updated to get newer PG libraries. 
+Reactive PostgreSQL for Meteor, Credits to original package by numtel, and inspired by vlasky mysql package, updated to get newer PG libraries, and refactored to not depend on other NPM package for simpler maintenance. 
 
-Provides Meteor integration of the [`pg-live-select` NPM module](https://github.com/numtel/pg-live-select), bringing reactive `SELECT` statement result sets from PostgreSQL >= 9.3.
+Provides Meteor an integrated live select class, bringing reactive `SELECT` statement result sets from PostgreSQL >= 9.3 using pg notify. 
 
-> If you do not have PostgreSQL server already installed, you may use [the numtel:pg-server Meteor Package](https://github.com/numtel/meteor-pg-server) to bundle the PostgreSQL server directly to your Meteor application.
+> If you do not have PostgreSQL server already installed, you may use [Meteor PG Server (only tested on osx)](https://github.com/bslocombe/meteor-pg-server) to bundle the PostgreSQL server directly to your Meteor application.
 
 * [How to publish joined queries that update efficiently](https://github.com/numtel/meteor-pg/wiki/Publishing-Efficient-Joined-Queries)
 * [Leaderboard example modified to use PostgreSQL](https://github.com/numtel/meteor-pg-leaderboard)
-* [Reactive MySQL for Meteor](https://github.com/numtel/meteor-mysql)
 
 ## Server Implements
 
-This package provides the `LivePg` class as defined in the [`pg-live-select` NPM package](https://github.com/numtel/pg-live-select).
-
-Also exposed on the server is the `pg` object as defined in the [`node-postgres` NPM package](https://github.com/brianc/node-postgres) (useful for other operations like `INSERT` and `UPDATE`).
+This package provides the `LivePg` class (moved into this package lib)
 
 ### `LivePg.prototype.select()`
 
@@ -30,41 +27,13 @@ Meteor.publish('allPlayers', function(){
 
 ## Client/Server Implements
 
-### `PgSubscription([connection,] name, [args...])`
 
-Constructor for subscribing to a published select statement. No extra call to `Meteor.subscribe()` is required. Specify the name of the subscription along with any arguments.
+Simply call `Meteor.subscribe()` as you would normally on the client. 
 
-The first argument, `connection`, is optional. If connecting to a different Meteor server, pass the DDP connection object in this first argument. If not specified, the first argument becomes the name of the subscription (string) and the default Meteor server connection will be used.
 
-The prototype inherits from `Array` and is extended with the following methods:
-
-Name | Description
------|--------------------------
-`change([args...])` | Change the subscription's arguments. Publication name and connection are preserved.
-`addEventListener(eventName, listener)` | Bind a listener function to this subscription
-`removeEventListener(eventName)` | Remove listener functions from an event queue
-`dispatchEvent(eventName, [args...])` | Call the listeners for a given event, returns boolean
-`depend()` | Call from inside of a Template helper function to ensure reactive updates
-`reactive()` | Same as `depend()` except returns self
-`changed()`| Signal new data in the subscription
-`ready()` | Return boolean value corresponding to subscription fully loaded
-`stop()` | Stop updates for this subscription
 
 **Notes:**
 
-* `changed()` is automatically called when the query updates and is most likely to only be called manually from a method stub on the client.
-* Event listener methods are similar to native methods. For example, if an event listener returns `false` exactly, it will halt listeners of the same event that have been added previously. A few differences do exist though to make usage easier in this context:
-  * The event name may also contain an identifier suffix using dot namespacing (e.g. `update.myEvent`) to allow removing/dispatching only a subset of listeners.
-  * `removeEventListener()` and `dispatchEvent()` both refer to listeners by name only. Regular expessions allowed.
-  * `useCapture` argument is not available.
-
-#### Event Types
-
-Name | Listener Arguments | Description
------|-------------------|-----------------------
-`update` | `diff, data` | New change, before data update
-`updated` | `diff, data` | New change, after data update
-`reset` | `msg` | Subscription reset (most likely due to code-push), before update
 
 ## Closing connections between hot code-pushes
 
@@ -89,7 +58,8 @@ process.on('SIGINT', closeAndExit);
 
 ## Tests / Benchmarks
 
-The test suite does not require a separate Postgres server installation as it uses [the `numtel:pg-server` package](https://github.com/numtel/meteor-pg-server) to run the tests.
+** tests are broken at this time **
+The test suite does not require a separate Postgres server installation as it uses [Meteor PG Server (only tested on osx)](https://github.com/bslocombe/meteor-pg-server) to run the tests.
 
 The database connection settings must be configured in `test/settings/local.json`.
 
@@ -124,11 +94,12 @@ var liveDb = new LivePg(Meteor.settings.private.postgres, 'test');
 // this._collection_name = "entities"
 
 Meteor.publish('test', function(){
+  this._collection_name = "entities" // override the default collection name to merge results into the entities collection
   let res = liveDb.select(
     `SELECT * from entity`,
-    [],
-    LivePgKeySelector.Columns(['id']),
-    [{table:'entity'}]
+    [], //query parameters if required
+    LivePgKeySelector.Columns(['id']), //how to index the _id column for the result set
+    [{table:'entity'}] //tables to create trigger functions in pg
   );
   return res;
 })
