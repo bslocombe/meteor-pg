@@ -1,7 +1,7 @@
 Package.describe({
   name: 'bslocombe:pg',
   summary: 'PostgreSQL support with Reactive Select Subscriptions',
-  version: '1.0.7',
+  version: '1.0.8',
   git: 'https://github.com/bslocombe/meteor-pg.git'
 });
 
@@ -18,7 +18,7 @@ Package.onUse(function(api) {
     'lib/refresh.tpl.sql',
     'lib/trigger.tpl.sql'
   ], 'server')
-  api.mainModule('LivePg.js');
+  api.mainModule('LivePg.js', 'server');
 });
 
 Package.onTest(function(api) {
