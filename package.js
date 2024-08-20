@@ -1,7 +1,7 @@
 Package.describe({
   name: 'bslocombe:pg',
   summary: 'PostgreSQL support with Reactive Select Subscriptions',
-  version: '1.0.8',
+  version: '1.1.8',
   git: 'https://github.com/bslocombe/meteor-pg.git'
 });
 
@@ -12,7 +12,7 @@ Npm.depends({
 })
 
 Package.onUse(function(api) {
-  api.versionsFrom('2.11.0');
+  api.versionsFrom(['2.11.0', '3.0']);
   api.use('ecmascript');
   api.addAssets([
     'lib/refresh.tpl.sql',

@@ -2,7 +2,7 @@
 
 // Variables exported by this module can be imported by other packages and
 // applications. See pg2-tests.js for an example of importing.
-var Future = Npm.require('fibers/future');
+// var Future = Npm.require('fibers/future');
 
 import _ from 'lodash'
 
@@ -14,10 +14,10 @@ const LivePg = LivePgLib
 
 LivePg.LivePgSelect.prototype._publishCursor = function(sub) {
   var self = this;
-  var fut = new Future;
+  return new Promise((resolve, reject)=>{
 
-  sub.onStop(function(){
-    self.stop();
+  sub.onStop(async function(){
+    return await self.stop();
   });
 
   // Send reset message (for code pushes)
@@ -31,12 +31,6 @@ LivePg.LivePgSelect.prototype._publishCursor = function(sub) {
   // Send aggregation of differences
   self.on('update', function(diff, rows){
     try{
-      // sub._session.send({
-      //   msg: 'added',
-      //   collection: sub._name,
-      //   id: sub._subscriptionId,
-      //   fields: { diff: diff }
-      // });
       if (diff.removed) {
         _.each(diff.removed, function(dummy, rowKey) {
           sub.removed(sub._collection_name || sub._name, rowKey);
@@ -58,20 +52,17 @@ LivePg.LivePgSelect.prototype._publishCursor = function(sub) {
         // Future versions may add special handling code
         // At the moment, we are happy simply to not crash the application
     }
-
-    if(sub._ready === false && !fut.isResolved()){
-      fut['return']();
+    if(sub._ready === false ){
+      resolve('')
     }
   });
 
   // Fail on error
   self.on('error', function(error){
-    if(!fut.isResolved()) {
-      fut['throw'](error);
-    }
+      reject(error);
   });
 
-  return fut.wait()
+  })
 }
 
 // Support for simple:rest
